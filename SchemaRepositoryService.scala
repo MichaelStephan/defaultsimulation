@@ -7,7 +7,9 @@ class SchemaRepositoryService extends BaseSimulation {
   def getScenarios : List[Scenario] = {
     List(
       Scenario(
-        
+        // NAME
+        "add single new schema and fetch multiple times",
+
         // BEFORE TEST
         exec {
           new OAuth2Authentication(sys.env("OAUTH2AUTHENTICATION_TOKEN_URL")).fetchOauth2AccessToken(sys.env("CLIENT_ID"), sys.env("CLIENT_SECRET"), 

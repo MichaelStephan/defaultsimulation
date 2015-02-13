@@ -9,7 +9,7 @@ import io.gatling.core.structure.ChainBuilder
 import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class BaseSimulation extends Simulation {
-  case class Scenario(val beforeTest:ChainBuilder, val test:ChainBuilder, val afterTest:ChainBuilder)
+  case class Scenario(name:String, beforeTest:ChainBuilder, test:ChainBuilder, afterTest:ChainBuilder)
  
   val NOP = exec { session =>
     session
@@ -30,15 +30,17 @@ abstract class BaseSimulation extends Simulation {
   val scenarios = scenario("Performance-Test").exec {
     randomSwitch(
       getScenarios.map( scenario => (100.0/ getScenarios.size) ->
-        exec { session => 
-          session.set("continue", true)
-        }.exec {
-          scenario.beforeTest.exitHereIfFailed.asLongAs("${continue}") {
-            scenario.test.exec { session => 
-              session.set("continue", continue.get()) 
-            }.pace(1 seconds)
+        group(scenario.name) {
+          exec { session => 
+            session.set("continue", true)
           }.exec {
-            scenario.afterTest
+            scenario.beforeTest.exitHereIfFailed.asLongAs("${continue}") {
+              scenario.test.exec { session => 
+                session.set("continue", continue.get()) 
+              }.pace(1 seconds)
+            }.exec {
+              scenario.afterTest
+            }
           }
         }
       ) : _*
