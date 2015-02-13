@@ -79,7 +79,10 @@ When a team decides to implement a service load test it:
 		  def getScenarios : List[Scenario] = {
 		    List(
 		      Scenario(
-		        // BEFORE TEST
+		        // NAME
+            "the scenario name",
+
+            // BEFORE TEST
 		        exec { ... },
 		       
 		        // TEST
