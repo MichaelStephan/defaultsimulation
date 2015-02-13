@@ -83,8 +83,7 @@ When a team decides to implement a service load test it:
 		        exec { ... },
 		       
 		        // TEST
-		        exec {  ... }
-		         ,
+		        exec {  ... },
 		     
 		        // AFTER TEST
 		        exec { ... }
