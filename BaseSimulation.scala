@@ -48,7 +48,7 @@ abstract class BaseSimulation extends Simulation {
   } 
 
   setUp(
-    scenarios.inject(rampUsers(1000) over (15 minutes)).protocols(httpConf),
+    scenarios.inject(rampUsers(900) over (15 minutes)).protocols(httpConf),
     
     scenario("Stop-Performance-Test").exec {
       pause(30 minutes).exec { session =>
