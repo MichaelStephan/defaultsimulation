@@ -17,7 +17,7 @@ This means that performacne testing will become part of the infrastructure and t
 ## Performance tests
 
 
-### Test tool 
+### Test tool
 
 [Gatling](http://gatling.io/ "Gatling") will be the performance test tool of choice for all teams. This decision is based upon the fact that various teams already gained a considerable amount of knowledge with the tooling.
 
@@ -45,17 +45,17 @@ Initially each team needs to select its ***top 5 performance relevant REST endpo
 
 ### Test strategy
 
-All teams' performance tests need to implement the same load curve and need to apply load for the same amount of time. 
+All teams' performance tests need to implement the same load curve and need to apply load for the same amount of time.
 
-![Load Curve](./images/concurrentusers.png =600x "Load Curve")
+![Load Curve](./images/concurrentusers.png "Load Curve")
 
 A single test run takes 30 minutes. In total >400.000 requests will be sent to the target all simulated users are ramped up.
 
-![Requests per seconds](./images/cummulativerequestsuntilrampupend.png =600x "Requests per seconds")
+![Requests per seconds](./images/cummulativerequestsuntilrampupend.png "Requests per seconds")
 
 During the peak load time each of the 900 users will execute 60 requests per minute. All in all this results in 900 requests per second. In case teams decide to implement multiple http calls per scenario *900 * <amount of http>* calls requests will be sent.
 
-![Requests per seconds](./images/rps.png =600x "Requests per seconds")
+![Requests per seconds](./images/rps.png "Requests per seconds")
 
 
 ### Test implementation
@@ -69,12 +69,12 @@ When a team decides to implement a service load test it:
 
 * Forks this git project (https://github.com/MichaelStephan/defaultsimulation)
 * Adds a single class which inherits from BaseSimulation.scala
-	
+
 		package defaultsimulation
-		
+
 		import io.gatling.core.Predef._
 		import io.gatling.http.Predef._
-		
+
 		class SchemaRepositoryService extends BaseSimulation {  
 		  def getScenarios : List[Scenario] = {
 		    List(
@@ -84,23 +84,23 @@ When a team decides to implement a service load test it:
 
             // BEFORE TEST
 		        exec { ... },
-		       
+
 		        // TEST
 		        exec {  ... },
-		     
+
 		        // AFTER TEST
 		        exec { ... }
 		      )
 		    )
 		  }
 		}
-		
+
 * As a next step each scenarios test phases need to be implement. Each scenario consists of the following phases:
 
 	* before test: actions required for setup (e.g.: creating data, login via oauth, ...)
 	* test: the actual test to be executed (e.g.: fetching data). A test block will be executed endlessly. Between each execution there is a 1 second break
 	* after test: actions required for cleanup (e.g. deleting data, logout, ...)
-	
+
 It may happen that a scenario does not require a before/ after step, therefore the NOP function can be used (see sample code in git repository). The sample code also shows how to do oauth2 based authentication and how to use the bearer token when doing cass in the actual test phase.
 
 Once all 5 scenarios are implemented a team can test the script directly from commandline which required various environment variabled to be available:
@@ -120,10 +120,3 @@ Finally the test can be run with:
 ### Test execution
 
 Currently infrastructure is providing a centralized Jenkins CI installation which tests can be registered to and finally run from.
-
-
-
-
-
-
-
